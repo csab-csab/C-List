@@ -1,23 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> //for memcpy()
 #include "list.h"
 
 /// @brief Creates list with intial capacity specified
 /// @param intialCapacity Intial size of list
+/// @param type Data type of list
 /// @return Pointer to list
-List* createList(size_t intialCapacity)
+List* createList(size_t intialCapacity, Type type)
 {
    List* list = (List*)malloc(sizeof(List)); //creates space for list in memory
-   list->data = (int*)malloc(intialCapacity* sizeof(int));
+
+   
+   //Assign element size in bytes, which later gets used to allocate correct amount of memory
+   switch (type.typeVal)
+   {
+        case CHAR:
+            list->elementSize = sizeof(char);
+            printf("created list with data type: CHAR.\n ");
+            break;
+        case INT:
+            list->elementSize = sizeof(int);
+            printf("created list with data type: INT.\n");
+            break;
+        case FLOAT:
+            list->elementSize = sizeof(float);
+            printf("created list with data type: FLOAT.\n");
+            break;
+        case DOUBLE:
+            list->elementSize = sizeof(double);
+            printf("created list with data type: DOUBLE.\n");
+            break;
+        case LONG:
+            list->elementSize = sizeof(long);
+            printf("created list with data type: LONG.\n");
+            break; 
+        default:
+            free(list);
+            printf("Error: Tried creating list with unsopported type!");
+            return NULL;
+    }
+   
+
+   list->typeOfList = type;
+   list->data = malloc(intialCapacity * list->elementSize);
    list->size = 0; 
    list->capacity = intialCapacity; 
+
+   printf("Size: %zu", intialCapacity * list->elementSize);
    return list;
 }
 
 /// @brief Adds specified item to the list
 /// @param list Pointer to list
 /// @param value Value you would like to add
-void add(List* list, int value)
+void add(List* list, void* value)
 {
     //if the list is full
     if (list->size >= list->capacity)
@@ -26,11 +63,17 @@ void add(List* list, int value)
         //Less allocations = quicker
         list->capacity *= 2;
         //realloc allocates new memory and copies old data over
-        list->data = (int*)realloc(list->data, list->capacity * sizeof(int));
+        list->data = realloc(list->data, list->capacity * list->elementSize);
     }
     
-    //adds new element to list at next index
-    list->data[list->size++] = value;
+    //calculate the memory address for the next element
+    //We cast to a char so we can do pointer arithematic
+    //We use char specifically because it's size is 1 byte
+    void* destination = (char*)list->data + (list->size * list->elementSize);
+    printf("Destination address:%p\n", destination);
+    //Copy data to the correct memory address
+    memcpy(destination, value, list->elementSize);
+    list->size++;
 }
 
 /// @brief Removes element at specified index
@@ -49,7 +92,7 @@ void removeAt(List* list, size_t index)
     //move everything in thhe array down one slot
     for(size_t i = index; i < list->size-1; i++)
     {
-        list->data[i] = list->data[i+1];
+        //list->data[i] = list->data[i+1];
     }
     
     list->size --;
