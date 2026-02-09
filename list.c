@@ -87,14 +87,23 @@ void removeAt(List* list, size_t index)
         printf("Index was out of range.");
         return; 
     }
-
-    //loop through all elements starting from specified index 
-    //move everything in thhe array down one slot
-    for(size_t i = index; i < list->size-1; i++)
-    {
-        //list->data[i] = list->data[i+1];
-    }
     
+    //Rather than looping through each element and moving elemetns one by one,
+    //we get the whole block of the remaining elements after the index of the one 
+    //we need to remove and copy it over to the address of the element we want
+    //to remove
+    size_t numberOfElementsToMove = list->size-index-1;
+    size_t bytesToMove = numberOfElementsToMove * list->elementSize;
+    void* destination = (char*)list->data + (index*list->elementSize);
+    void* source = (char*)list->data + ((index+1)*list->elementSize);
+    //Technically not needed but good anyway
+    //this doesnt run if we remove the last element of the array
+    //because there is nothing to copy over
+    if(bytesToMove>0)
+    {
+        memmove(destination, source, bytesToMove);
+    }
+
     list->size --;
 }
 
