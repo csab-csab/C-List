@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
     }
     
     //create get() function
-    char* charListData = (char*)myCharList->data;
+    char* charListData = (char*)listGetData(myCharList);
 
     for(size_t i = 0; i < listSize(myCharList); i++)
     {

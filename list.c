@@ -11,7 +11,6 @@ List* createList(size_t intialCapacity, Type type)
 {
    List* list = (List*)malloc(sizeof(List)); //creates space for list in memory
 
-   
    //Assign element size in bytes, which later gets used to allocate correct amount of memory
    switch (type.typeVal)
    {
@@ -116,6 +115,22 @@ void listRemoveAt(List* list, size_t index)
 size_t listSize(const List* list)
 {
     return list->size;
+}
+
+/// @brief Gets data contained in list. (Please note: you have to cast to the correct type yourself.)
+/// @param list 
+/// @return Returns void pointer to the start of the block of memory where the data 
+///for the list lives
+void* listGetData(const List* list)
+{
+    return list->data;
+}
+
+/// @brief Clears list of all its elements
+/// @param list 
+void listClear(List* list)
+{
+    list->size = 0;
 }
 
 /// @brief Frees memory of list struct once you are finished with it

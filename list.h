@@ -32,6 +32,7 @@ List* createList(size_t intialCapacity, Type type);
 void listAdd(List* list, void* data);
 void listRemoveAt(List* list, size_t index);
 size_t listSize(const List* list);
+void* listGetData(const List* list);
 void freeList(List*);
 
 #endif
