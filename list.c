@@ -47,14 +47,14 @@ List* createList(size_t intialCapacity, Type type)
    list->size = 0; 
    list->capacity = intialCapacity; 
 
-   printf("Size: %zu", intialCapacity * list->elementSize);
+   printf("\nSize: %zu bytes", intialCapacity * list->elementSize);
    return list;
 }
 
 /// @brief Adds specified item to the list
 /// @param list Pointer to list
 /// @param value Value you would like to add
-void add(List* list, void* value)
+void listAdd(List* list, void* value)
 {
     //if the list is full
     if (list->size >= list->capacity)
@@ -79,7 +79,7 @@ void add(List* list, void* value)
 /// @brief Removes element at specified index
 /// @param list Pointer to list struct
 /// @param index Index of the element you want to remove
-void removeAt(List* list, size_t index)
+void listRemoveAt(List* list, size_t index)
 {
     //Check if index is valid
     if(index >= list->size)
@@ -104,6 +104,8 @@ void removeAt(List* list, size_t index)
         memmove(destination, source, bytesToMove);
     }
 
+    printf("Destination address:%p, Source Address:%p, Number of elements to move: %zu, Number of bytes to move: %zu\n", 
+        destination, source, numberOfElementsToMove, bytesToMove);
     list->size --;
 }
 
@@ -111,7 +113,7 @@ void removeAt(List* list, size_t index)
 /// @brief Returns the size of the list
 /// @param list Pointer to list
 /// @return Number of elements in the list
-size_t size(const List* list)
+size_t listSize(const List* list)
 {
     return list->size;
 }
