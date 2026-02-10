@@ -29,9 +29,9 @@ typedef struct
 
 
 List* createList(size_t intialCapacity, Type type);
-void add(List* list, void* data);
-void removeAt(List* list, size_t index);
-size_t size(const List* list);
+void listAdd(List* list, void* data);
+void listRemoveAt(List* list, size_t index);
+size_t listSize(const List* list);
 void freeList(List*);
 
 #endif
